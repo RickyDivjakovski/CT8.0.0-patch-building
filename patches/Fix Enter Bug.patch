@@ -1,0 +1,11 @@
+AUTHOR=Ricky Divjakovski
+VERSION=1.0
+DESCRIPTION=Fixes the ENTER key pressing Q on keyboard
+
+# Replace lines 
+ReplaceLine|/system/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
+ReplaceLine|/vendor/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
+ReplaceLine|/product/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
+ReplaceLine|/odm/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
+ReplaceLine|/oem/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
+ReplaceLine|/system_ext/usr/keylayout/Generic.kl|START|key 28 |key 28    ENTER
