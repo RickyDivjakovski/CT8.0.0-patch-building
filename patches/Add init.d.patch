@@ -1,0 +1,33 @@
+AUTHOR=TheRealDee
+VERSION=1.0
+DESCRIPTION=Adds init.d support
+
+WriteLine|This will work only if the tool has access to init.rc
+
+Download|/level2/system/init.zip|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/init.d.zip
+Unzip|/level2/system/init.zip|/level2/system
+DeleteFile|/level2/system/init.zip
+
+IfNotContains|/level2/system/init.rc|/system/bin/sysinit
+AppendFile|/level2/system/init.rc|\nservice sysinit /system/bin/sysinit\n    oneshot
+
+IfNotContains|/level2/boot/ramdisk/init.rc|/system/bin/sysinit
+AppendFile|/level2/boot/ramdisk/init.rc|\nservice sysinit /system/bin/sysinit\n  oneshot
+
+IfNotContains|/level2/.config/system_fs_config|system/bin/sysinit
+ReplaceText|/level2/.config/system_fs_config|system/build.prop|system/bin/sysinit 0 0 0777\nsystem/build.prop
+
+IfFileExists|/level2/system/build.prop
+DeleteDir|/level2/system/system
+
+IfFileExists|/level2/system/build.prop
+CreateDir|/level2/system/etc/init.d
+
+IfFileExists|/level2/system/system/build.prop
+DeleteFile|/level2/system/bin/sysinit
+
+IfFileExists|/level2/system/system/build.prop
+CreateDir|/level2/system/system/etc/init.d
+
+IfDirExists|/level2/vendor
+CreateDir|/level2/vendor/etc/init.d

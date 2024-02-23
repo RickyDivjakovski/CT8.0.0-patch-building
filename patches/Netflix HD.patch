@@ -1,14 +1,24 @@
 AUTHOR=AidenRom
-VERSION=1.0
+VERSION=1.3
 DESCRIPTION=Netflix with Widevine L3 certificate bypass (HD)
 
 # Delete all previous netflix apk files
-SearchDeleteFile|/system|*netflix*.apk
-SearchDeleteFile|/vendor|*netflix*.apk
-SearchDeleteFile|/product|*netflix*.apk
-SearchDeleteFile|/odm|*netflix*.apk
-SearchDeleteFile|/oem|*netflix*.apk
-SearchDeleteFile|/system_ext|*netflix*.apk
+SearchDeleteFile|/level2|*netflix*.apk
 
-# Download the file into directory
-Download|/system/app/netflix.apk|Y|https://mva1.androidfilehost.com/dl/GPJ1meEvGkKaRoD3Nbxm-g/1708065862/4279422670115736288/Aidan%27s+TV+Netflix+v3+%28L3+Uncertified%29+%282.0.build.295%29+%28Jan+2023+-+CURRENT%29_%28Android+6.0%2B%29.apk?
+# Download the file into correct directory
+IfDirExists|/level2/vendor
+CreateDir|/level2/vendor/app
+
+IfDirExists|/level2/vendor/app
+Download|/level2/vendor/app/netflix.apk|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/NetflixHD.apk
+
+IfFileExists|/level2/vendor/app/netflix.apk
+EndScript|SUCCESS|Installed to vendor
+
+IfFileExists|/level2/system/build.prop
+Download|/level2/system/app/netflix.apk|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/NetflixHD.apk
+
+IfFileExists|/level2/system/system/build.prop
+Download|/level2/system/system/app/netflix.apk|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/NetflixHD.apk
+
+WriteLine|Installed to system

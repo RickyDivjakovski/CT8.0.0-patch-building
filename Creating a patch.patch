@@ -81,7 +81,7 @@ DESCRIPTION=How to create a patch file
 # CreateFile|/level2/system/MyNewFile.txt
 
 # This function will check if a directory does not exists, if it doesnt it will run the next line of code - IfDirNotExists|DIRNAME
-# IfDirExists|/level2/system/build.prop
+# IfDirNotExists|/level2/system/build.prop
 # CreateFile|/level2/system/MyNewDir
 
 # This function will check if a file contains text, if so it will run the next line of code - IfContains|FILENAME|PHRASE
