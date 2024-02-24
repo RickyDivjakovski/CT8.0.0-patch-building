@@ -1,0 +1,26 @@
+AUTHOR=Ricky Divjakovski
+VERSION=1.0
+DESCRIPTION=Adds the stock google bootvideo to the firmware
+
+IfFileExists|/level2/system/build.prop
+ReplaceLine|/level2/system/build.prop|CONTAINS|service.bootvideo|service.bootvideo=1
+
+IfFileExists|/level2/system/system/build.prop
+ReplaceLine|/level2/system/system/build.prop|CONTAINS|service.bootvideo|service.bootvideo=1
+
+IfFileExists|/level3/bootvideo/system/bootvideo.mp4
+DeleteFile|/level3/bootvideo/system/bootvideo.mp4
+
+Download|/level3/bootvideo/system/bootvideo.mp4|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/bootanimations/bootvids/StockGoogle.mp4
+
+IfFileExists|/level2/vendor/build.prop
+ReplaceLine|/level2/vendor/build.prop|CONTAINS|service.bootvideo|service.bootvideo=1
+
+IfDirExists|/level2/vendor/etc
+CreateDirectory|/level3/bootvideo/vendor
+
+IfFileExists|/level3/bootvideo/vendor/bootvideo.mp4
+DeleteFile|/level3/bootvideo/vendor/bootvideo.mp4
+
+IfDirExists|/level2/vendor/etc
+CopyFile|/level3/bootvideo/system/bootvideo.mp4|/level3/bootvideo/vendor/bootvideo.mp4|Y

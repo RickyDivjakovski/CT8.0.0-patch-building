@@ -1,0 +1,83 @@
+AUTHOR=Slim House
+VERSION=1.0
+DESCRIPTION=Installs Viper4Android on android 9, 10 or 11
+
+# Check if android version is supported
+IfContains|/level2/system/build.prop|ro.build.version.release=7
+EndScript|FAILED|Failed to install Viper4Android, android 8 not supported
+IfContains|/level2/system/build.prop|ro.build.version.release=8
+EndScript|FAILED|Failed to install Viper4Android, android 8 not supported
+IfContains|/level2/system/system/build.prop|ro.build.version.release=7
+EndScript|FAILED|Failed to install Viper4Android, android 8 not supported
+IfContains|/level2/system/system/build.prop|ro.build.version.release=8
+EndScript|FAILED|Failed to install Viper4Android, android 8 not supported
+
+# Clean old installs
+DeleteDir|/level2/system/priv-app/ViPER4AndroidFX
+DeleteFile|/level2/system/etc/permissions/com.pittvandewitt.viperfx.xml
+DeleteDir|/level2/system/system/priv-app/ViPER4AndroidFX
+DeleteFile|/level2/system/system/etc/permissions/com.pittvandewitt.viperfx.xml
+DeleteFile|/level2/vendor/lib/soundfx/libv4a_fx.so
+DeleteFile|/level2/product/overlay/ViperOverlay.apk
+ReplaceLine|/level2/.config/system_fs_config|CONTAINS|system/etc/permissions/com.pittvandewitt.viperfx.xml|\n
+ReplaceLine|/level2/.config/vendor_fs_config|CONTAINS|vendor/lib/soundfx/libv4a_fx.so|\n
+
+# Common
+CreateDir|/level2/vipertmp
+Download|/level2/vipertmp/Viper4Android.zip|Y|https://raw.githubusercontent.com/RickyDivjakovski/CT8.0.0-patch-building/main/PatchResources/Viper4Android.zip
+Unzip|/level2/vipertmp/Viper4Android.zip|/level2/vipertmp
+IfDirNotExists|/level2/vendor/lib/soundfx
+CreateDir|/level2/vendor/lib/soundfx
+MoveFile|/level2/vipertmp/common/vendor/lib/soundfx/libv4a_fx.so|/level2/vendor/lib/soundfx/libv4a_fx.so|Y
+IfFileExists|/level2/system/build.prop
+MoveFile|/level2/vipertmp/common/system/etc/permissions/com.pittvandewitt.viperfx.xml|/level2/system/etc/permissions/com.pittvandewitt.viperfx.xml|Y
+IfFileExists|/level2/system/system/build.prop
+MoveFile|/level2/vipertmp/common/system/etc/permissions/com.pittvandewitt.viperfx.xml|/level2/system/system/etc/permissions/com.pittvandewitt.viperfx.xml|Y
+
+# Add permissions
+IfFileExists|/level2/system/etc/permissions/com.pittvandewitt.viperfx.xml
+IfNotContains|/level2/.config/system_fs_config|system/etc/permissions/com.pittvandewitt.viperfx.xml
+AppendFile|/level2/.config/system_fs_config|\nsystem/etc/permissions/com.pittvandewitt.viperfx.xml 0 0 0644
+IfFileExists|/level2/system/system/etc/permissions/com.pittvandewitt.viperfx.xml
+IfNotContains|/level2/.config/system_fs_config|system/etc/permissions/com.pittvandewitt.viperfx.xml
+AppendFile|/level2/.config/system_fs_config|\nsystem/etc/permissions/com.pittvandewitt.viperfx.xml 0 0 0644
+IfFileExists|/level2/system/system/etc/permissions/com.pittvandewitt.viperfx.xml
+IfNotContains|/level2/.config/system_fs_config|vendor/lib/soundfx/libv4a_fx.so
+AppendFile|/level2/.config/vendor_fs_config|\nvendor/lib/soundfx/libv4a_fx.so 0 0 0644
+
+# Android 9
+IfContains|/level2/system/build.prop|ro.build.version.release=9
+MoveDir|/level2/vipertmp/9viper/system/priv-app/ViPER4AndroidFX|/level2/system/priv-app/ViPER4AndroidFX|Y
+IfContains|/level2/system/system/build.prop|ro.build.version.release=9
+MoveDir|/level2/vipertmp/9viper/system/priv-app/ViPER4AndroidFX|/level2/system/system/priv-app/ViPER4AndroidFX|Y
+
+# Android 11
+IfContains|/level2/system/build.prop|ro.build.version.release=11
+MoveDir|/level2/vipertmp/11viper/system/priv-app/ViPER4AndroidFX|/level2/system/priv-app/ViPER4AndroidFX|Y
+IfContains|/level2/system/system/build.prop|ro.build.version.release=11
+MoveDir|/level2/vipertmp/11viper/system/priv-app/ViPER4AndroidFX|/level2/system/system/priv-app/ViPER4AndroidFX|Y
+IfDirNotExists|/level2/product/overlay
+CreateDir|/level2/product/overlay
+MoveFile|/level2/vipertmp/11viper/product/overlay/ViperOverlay.apk|/level2/product/overlay/ViperOverlay.apk|Y
+
+# Clean up and end if installed
+DeleteDir|/level2/vipertmp
+
+IfFileExists|/level2/system/priv-app/ViPER4AndroidFX/ViPER4AndroidFX.apk
+EndScript|SUCCESS|Viper4Android was installed
+
+IfFileExists|/level2/system/system/priv-app/ViPER4AndroidFX/ViPER4AndroidFX.apk
+EndScript|SUCCESS|Viper4Android was installed
+
+# Failed install cleanup and exit
+DeleteDir|/level2/system/priv-app/ViPER4AndroidFX
+DeleteFile|/level2/system/etc/permissions/com.pittvandewitt.viperfx.xml
+DeleteDir|/level2/system/system/priv-app/ViPER4AndroidFX
+DeleteFile|/level2/system/system/etc/permissions/com.pittvandewitt.viperfx.xml
+DeleteFile|/level2/vendor/lib/soundfx/libv4a_fx.so
+DeleteFile|/level2/product/overlay/ViperOverlay.apk
+ReplaceLine|/level2/.config/system_fs_config|CONTAINS|system/etc/permissions/com.pittvandewitt.viperfx.xml|\n
+ReplaceLine|/level2/.config/vendor_fs_config|CONTAINS|vendor/lib/soundfx/libv4a_fx.so|\n
+
+# Exit script
+EndScript|FAILED|Failed to install Viper4Android
