@@ -1,5 +1,5 @@
 AUTHOR=Ricky Divjakovski
-VERSION=1.3
+VERSION=1.4
 DESCRIPTION=How to create a patch file
 
 # Lines beginning with # will be ignores
@@ -8,6 +8,10 @@ DESCRIPTION=How to create a patch file
 
 # This will output text to the patch output window - WriteLine|OUTPUTTEXT
 # WriteLine|Hi, this is my first patch
+
+# This checks if the patch is being installed to the correct platform (Amlgic, Rockchip or Allwinner)
+# If not the script will not run
+# Platform|Amlogic
 
 # This will instantaneously end a script with output to the patch output window (use with IfExists or IfContains) - EndScript|FAILED/SUCCESS|OUTPUTTEXT
 # IfFileNotExists|/level2/system/build.prop2
